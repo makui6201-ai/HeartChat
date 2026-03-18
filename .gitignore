@@ -1,0 +1,21 @@
+# ── Go server ──────────────────────────────────────────
+server/vendor/
+server/*.exe
+server/*.test
+server/*.out
+server/heartchat-server
+
+# ── Environment secrets (never commit) ──────────────────
+.env
+*.env
+
+# ── IDE / editor artifacts ──────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# ── WeChat Developer Tools caches ───────────────────────
+miniprogram/.cache/
+miniprogram/node_modules/
