@@ -10,9 +10,19 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"heartchat-server/handlers"
+	"heartchat-server/services"
 )
 
 func main() {
+	// Initialise file-backed user-state store.
+	dataDir := os.Getenv("DATA_DIR")
+	if dataDir == "" {
+		dataDir = "./data"
+	}
+	if err := services.InitStore(dataDir); err != nil {
+		log.Fatalf("failed to init store: %v", err)
+	}
+
 	r := gin.Default()
 
 	// CORS – set CORS_ORIGIN env var to restrict origins in production.
@@ -23,14 +33,17 @@ func main() {
 	}
 	r.Use(cors.New(cors.Config{
 		AllowOrigins: allowOrigins,
-		AllowMethods: []string{"GET", "POST", "OPTIONS"},
+		AllowMethods: []string{"GET", "POST", "DELETE", "OPTIONS"},
 		AllowHeaders: []string{"Origin", "Content-Type"},
 	}))
 
 	api := r.Group("/api")
 	{
+		api.POST("/login", handlers.Login)
 		api.POST("/chat", handlers.Chat)
 		api.POST("/greeting", handlers.Greeting)
+		api.GET("/history", handlers.GetHistory)
+		api.DELETE("/history", handlers.DeleteHistory)
 	}
 
 	r.GET("/health", func(c *gin.Context) {
