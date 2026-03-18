@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/chat/chat"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "HeartChat",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#fff5f5"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

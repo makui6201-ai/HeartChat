@@ -1,0 +1,40 @@
+{
+  "description": "HeartChat 虚拟恋人小程序",
+  "projectname": "HeartChat",
+  "appid": "touristappid",
+  "compileType": "miniprogram",
+  "libVersion": "3.2.4",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "bundle": false,
+    "useIsolateContext": true,
+    "useCompilerModule": true,
+    "minifyWXSS": true,
+    "disableUseStrict": false,
+    "minifyWXML": false,
+    "useCompilerPlugins": false
+  },
+  "condition": {}
+}

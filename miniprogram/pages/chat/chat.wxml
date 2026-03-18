@@ -1,0 +1,111 @@
+<!-- Chat page -->
+<view class="page">
+
+  <!-- ===== Header ===== -->
+  <view class="chat-header">
+    <view class="header-left">
+      <!-- Back button -->
+      <view class="back-btn" bindtap="goBack">
+        <text class="back-icon">‹</text>
+      </view>
+      <!-- Avatar + online dot -->
+      <view class="avatar-wrap">
+        <image class="header-avatar" src="{{char.avatarImage}}" mode="aspectFill" />
+        <view class="online-dot" />
+      </view>
+      <!-- Name + status -->
+      <view class="header-meta">
+        <text class="header-name">{{char.name}}</text>
+        <text class="header-status">在线</text>
+      </view>
+    </view>
+
+    <!-- Love score badge -->
+    <view class="love-badge">
+      <text class="love-heart">♥</text>
+      <text class="love-score">好感度: {{love}}</text>
+    </view>
+  </view>
+
+  <!-- ===== Chat messages ===== -->
+  <scroll-view
+    class="chat-area"
+    scroll-y
+    scroll-into-view="{{scrollToId}}"
+    scroll-with-animation
+    enhanced="{{true}}"
+    show-scrollbar="{{false}}"
+  >
+    <!-- Date divider -->
+    <view class="date-divider">
+      <text class="date-label">今天</text>
+    </view>
+
+    <!-- Message list -->
+    <block wx:for="{{messages}}" wx:key="id">
+
+      <!-- AI message (left) -->
+      <view wx:if="{{item.role === 'ai'}}" class="msg-row ai-row" id="msg-{{item.id}}">
+        <image class="msg-avatar" src="{{char.avatarImage}}" mode="aspectFill" />
+        <view class="bubble ai-bubble">
+          <text class="bubble-text">{{item.content}}</text>
+          <text class="msg-time">{{item.time}}</text>
+        </view>
+      </view>
+
+      <!-- Typing indicator (left) -->
+      <view wx:elif="{{item.role === 'typing'}}" class="msg-row ai-row" id="msg-{{item.id}}">
+        <image class="msg-avatar" src="{{char.avatarImage}}" mode="aspectFill" />
+        <view class="bubble ai-bubble typing-bubble">
+          <text class="dot dot1">•</text>
+          <text class="dot dot2">•</text>
+          <text class="dot dot3">•</text>
+        </view>
+      </view>
+
+      <!-- User message (right) -->
+      <view wx:elif="{{item.role === 'user'}}" class="msg-row user-row" id="msg-{{item.id}}">
+        <view class="bubble user-bubble">
+          <text class="bubble-text">{{item.content}}</text>
+          <view class="msg-meta-right">
+            <text class="msg-time user-time">{{item.time}}</text>
+            <text class="checkmark">✓</text>
+          </view>
+        </view>
+      </view>
+
+    </block>
+
+    <!-- Scroll anchor -->
+    <view id="scroll-bottom" style="height:24rpx;" />
+  </scroll-view>
+
+  <!-- ===== Input bar ===== -->
+  <view class="input-bar">
+    <view class="textarea-wrap">
+      <textarea
+        class="msg-input"
+        value="{{inputText}}"
+        placeholder="给{{char.name}}发消息..."
+        placeholder-class="input-placeholder"
+        bindinput="onInput"
+        bindconfirm="sendMessage"
+        confirm-type="send"
+        auto-height
+        disabled="{{sending}}"
+        adjust-position
+        cursor-spacing="16"
+        maxlength="500"
+      />
+    </view>
+    <button
+      class="send-btn{{sending ? ' send-btn-disabled' : ''}}"
+      bindtap="sendMessage"
+      disabled="{{sending}}"
+      hover-class="send-btn-hover"
+    >
+      <text class="send-arrow">➤</text>
+    </button>
+  </view>
+
+</view>

@@ -1,0 +1,42 @@
+<!-- Character selection page -->
+<view class="page">
+
+  <!-- Header -->
+  <view class="page-header">
+    <text class="title">选择你的专属陪伴</text>
+    <text class="subtitle">虚拟恋人</text>
+  </view>
+
+  <!-- Character cards -->
+  <view class="card-list">
+
+    <!-- Boyfriend card -->
+    <view class="character-card boyfriend-shadow" bindtap="selectBoyfriend">
+      <image class="card-image" src="{{boyfriendChar.cardImage}}" mode="aspectFill" lazy-load />
+      <view class="card-overlay" />
+      <view class="card-info">
+        <text class="char-name">{{boyfriendChar.name}}</text>
+        <text class="char-tag">{{boyfriendChar.tag}}</text>
+        <text class="char-desc">{{boyfriendChar.desc}}</text>
+      </view>
+    </view>
+
+    <!-- Girlfriend card -->
+    <view class="character-card girlfriend-shadow" bindtap="selectGirlfriend">
+      <image class="card-image" src="{{girlfriendChar.cardImage}}" mode="aspectFill" lazy-load />
+      <view class="card-overlay" />
+      <view class="card-info">
+        <text class="char-name">{{girlfriendChar.name}}</text>
+        <text class="char-tag pink-tag">{{girlfriendChar.tag}}</text>
+        <text class="char-desc">{{girlfriendChar.desc}}</text>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- Footer hint -->
+  <view class="page-footer">
+    <text class="footer-hint">点击头像开启旅程</text>
+  </view>
+
+</view>
