@@ -5,6 +5,9 @@ server/*.test
 server/*.out
 server/heartchat-server
 
+# ── Runtime data (per-user state, do not commit) ────────
+server/data/
+
 # ── Environment secrets (never commit) ──────────────────
 .env
 *.env

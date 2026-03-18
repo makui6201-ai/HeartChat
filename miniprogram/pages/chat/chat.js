@@ -37,9 +37,10 @@ Page({
   },
 
   onLoad() {
-    const role = app.globalData.role || 'girlfriend'
-    const love = app.globalData.love || 0
-    const char = CHARACTERS[role] || CHARACTERS.girlfriend
+    const role   = app.globalData.role   || 'girlfriend'
+    const love   = app.globalData.love   || 0
+    const openId = app.globalData.openId || ''
+    const char   = CHARACTERS[role] || CHARACTERS.girlfriend
 
     this.setData({
       char,
@@ -47,7 +48,57 @@ Page({
       loveLevel: getLoveLevel(love),
     })
 
-    this._loadGreeting()
+    // If we have a server-side user identity, load their stored history first
+    // so returning users see their previous conversation.
+    if (openId) {
+      this._loadServerHistory(openId, role, char, love)
+    } else {
+      this._loadGreeting()
+    }
+  },
+
+  // ------------------------------------------------------------------ history
+
+  /** Load persisted history from the server for returning users. */
+  _loadServerHistory(openId, role, char, love) {
+    api.getHistory(openId)
+      .then((data) => {
+        // Restore role and love from the server if available.
+        const serverRole = data.role || role
+        const serverLove = data.love != null ? data.love : love
+        const serverChar = CHARACTERS[serverRole] || char
+
+        // Sync global state with server state.
+        app.globalData.role = serverRole
+        app.globalData.love = serverLove
+
+        this.setData({
+          char: serverChar,
+          love: serverLove,
+          loveLevel: getLoveLevel(serverLove),
+        })
+
+        // Render persisted history messages.
+        if (data.history && data.history.length > 0) {
+          const msgs = data.history.map((m, i) => ({
+            id: i + 1,
+            role: m.role === 'assistant' ? 'ai' : 'user',
+            content: m.content,
+            time: '',  // historical messages don't have a stored time
+          }))
+          this.setData({
+            messages: msgs,
+            _msgCounter: msgs.length,
+            scrollToId: `msg-${msgs.length}`,
+          })
+        }
+        // Always show a greeting after history is loaded.
+        this._loadGreeting()
+      })
+      .catch(() => {
+        // History load failed – just show the greeting as normal.
+        this._loadGreeting()
+      })
   },
 
   // ------------------------------------------------------------------ greeting
@@ -100,9 +151,10 @@ Page({
       }))
 
     const { char, love } = this.data
+    const openId = app.globalData.openId || ''
 
     api
-      .chat(char.key, love, text, history)
+      .chat(openId, char.key, love, text, history)
       .then((res) => {
         this._removeTyping()
         return this._typewriter(res.reply)
